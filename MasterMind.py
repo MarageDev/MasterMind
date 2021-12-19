@@ -99,6 +99,6 @@ def run ():                                                 ###     The function
                 break;                                      # Stop the tries loop
             else:
                 tries -= 1                                  # Decrease the amount of tries
-                print("\nYou have "+str(tries)+" left\n")   # Print the number of tries left
+                print("\nYou have "+str(tries)+" tries left\n")   # Print the number of tries left
 
 run()                                                       ###     Run the game
