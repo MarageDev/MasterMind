@@ -9,5 +9,6 @@
   - A 1 player mode where the target code will be random
   - Maybe letter support
   - Customization settings ( tries, code format... )
+  - Reworked ReadMe on github with images and maybe videos ( And maybe add this project to a global github webpage with all my work )
 ## Credits
 Marage and Mordecai Meirowitz for the original idea
