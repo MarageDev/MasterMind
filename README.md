@@ -51,7 +51,7 @@ You've found the code, good work !
 ```
 
 
-### Features
+### Coming Features
   - Reworked Logs
   - An app to run it instead of runing it in the terminal and get a nicer UI
   - A 1 player mode where the target code will be random
