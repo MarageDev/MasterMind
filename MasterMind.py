@@ -2,11 +2,15 @@
 ### by Marage
 
 
+from math import nan
 import random as rdm
 from random import randrange
+import re
+from re import *
+from collections import namedtuple
 
 ### Variables
-code = ''                                                   ###     Default code variable
+code = '45'                                                   ###     Default code variable
 number = ''                                                 ###     Testing code variable
 code_arr = []                                               ###     An array of the numbers in the "code" variable to help with value comparison
 combination_arr = []                                        ###     An array of the numbers in the "number" variable to help with value comparison
@@ -14,6 +18,11 @@ shownCode = []                                              ###     An array of 
 combHints = []                                              ###     An array of the numbers which are present in the code. Eg : the code is "1234" and the other player enter the code "4321", this will tells that the numbers 1,2,3 and 4 are presents in the final code
 playMode = 'solo'                                           ###     Choose to play in solo or with 2 players
 
+setting = namedtuple('setting', 'name value')
+settings = [setting('codeLength', '10'),                     ###     Customizable Settings ( don't change the order, for the moment it's based on index )
+            setting('TriesCount', '4')
+            ]
+print(int(settings[1].value))
 ### Functions
 def askCode ():                                             ###     Ask to the player the code to find ( needs to be a 4 digits code)
     global code
@@ -21,13 +30,20 @@ def askCode ():                                             ###     Ask to the p
     print('The code is : '+code)
 def verifyCode ():                                          ###     Check code's length, and maybe some other features in the future
     global code
-    if len(str(code)) != 4:                                      # Target code's length
-        print('Code must contains 4 digits')
-        return False;
+    #float(settings[1].value) == len(str(code)) and 
+    if float(settings[0].value) == len(str(code)):                                                     # Check the code with the settings from the array of tuple "settings"
+        if str(re.search('[a-z]',code)) == 'None': 
+            return True;
+        else:
+            return False;
     else:
-        return True;
+        print('Code must contains '+str(settings[1].value)+' digits and contains only numbers')
+        return False;
+
 def clearConsoleLogs():                                     ###     "Clear" the console by skipping 100 lines
     print("\n"*100)
+def consoleLine():
+    print("-"*50)
 def verifyNumber (number):                                  ###     NOT USED
     global code
     lookingfor = str(number)
@@ -37,7 +53,7 @@ def verifyNumber (number):                                  ###     NOT USED
             print(str(c) + " " + code[c]);
 def generateRandomCode():
     global code
-    code = str(rdm.randrange(0000, 9999))
+    code = str(rdm.randrange(0000, 10**float(settings[0].value)-1))
 def askNumber():                                            ###     Ask to the player the code to test
     global number
     number = input('Enter a code to test :\n- ')
@@ -106,27 +122,29 @@ def playMode():
             print('! Enter a valid option')
 def run (playMode):                                         ###     The function called to run the file
     if playMode == 'solo':
-        tries = 8                                               # Set the number of tries allowed
+        tries = int(settings[1].value)                               # Set the number of tries allowed
         clearConsoleLogs()                                      # Clear the console
-        generateRandomCode()                                    # Generate a random code
+        generateRandomCode()     
+        print(code)                               # Generate a random code
         if verifyCode() == True:                                # Check if the code use a correct format ( 4 digits ). Should be always True in solo 
             print(code)                                         
             clearConsoleLogs()                                  # Clear the console to avoid the other player to see the final code
-            for x in range(tries):                              # Loop until the "tries" variable is equal to 0
+            for x in range(int(settings[1].value)):                              # Loop until the "tries" variable is equal to 0
                 askNumber()                                     # Ask to the other player a code to test
                 if comp() == True:                              # Run the comparison logic and see if it's returning True ( Win ) or False ( Continue )
                     print("You've found the code, good work ! ")
                     break;                                      # Stop the tries loop
                 else:
                     tries -= 1                                  # Decrease the amount of tries
-                    print("\nYou have "+str(tries)+" tries left\n")   # Print the number of tries left
+                    print("\nYou have "+str(tries)+" tries left")   # Print the number of tries left
+                consoleLine()
     elif playMode == 'duo':
-        tries = 2                                               # Set the number of tries allowed
+        tries = int(settings[1].value)                          # Set the number of tries allowed
         clearConsoleLogs()                                      # Clear the console
         askCode()                                               # Ask the code to the player
         if verifyCode() == True:                                # Check if the code use a correct format ( 4 digits )
             clearConsoleLogs()                                  # Clear the console to avoid the other player to see the final code
-            for x in range(tries):                              # Loop until the "tries" variable is equal to 0
+            for x in range(int(settings[1].value)):                              # Loop until the "tries" variable is equal to 0
                 askNumber()                                     # Ask to the other player a code to test
                 if comp() == True:                              # Run the comparison logic and see if it's returning True ( Win ) or False ( Continue )
                     print("You've found the code, good work ! ")
